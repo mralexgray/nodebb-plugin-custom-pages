@@ -1,8 +1,8 @@
 {
-	"id": "nodebb-plugin-custom-pages",
-	"name": "Custom Static pages for NodeBB",
-	"description": "Allows you to add as many new pages as you like to your NodeBB forum",
-	"url": "https://github.com/NodeBB/nodebb-plugin-custom-pages",
+	"id": "nodebb-plugin-custom-secured-pages",
+	"name": "Custom Secured Static pages for NodeBB",
+	"description": "Allows you to add as many new pages as you like to your NodeBB forum and secure them if needed.",
+	"url": "https://github.com/skulasekar/nodebb-plugin-custom-pages.git",
 	"library": "./library.js",
 	"hooks": [
 		{

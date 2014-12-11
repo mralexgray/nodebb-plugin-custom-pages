@@ -21,6 +21,14 @@ function getCustomPages(callback) {
 	});
 }
 
+function setupPageRoute(router, name, middleware, middlewares, controller) {
+	middlewares = middlewares.concat([middleware.checkIfConfirmed, middleware.incrementPageViews, middleware.updateLastOnlineTime]);
+
+	router.get(name, middleware.buildHeader, middlewares, controller);
+	router.get('/templates/' + name + '.tpl', controller);
+	router.get('/api' + name, middlewares, controller);
+}
+
 plugin.setAvailableTemplates = function(templates, callback) {
 	getCustomPages(function(err, data) {
 		for (var d in data) {
@@ -70,7 +78,7 @@ plugin.addAdminNavigation = function(header, callback) {
 	header.plugins.push({
 		route: '/custom-pages',
 		icon: 'fa-mobile',
-		name: 'Custom Static Pages'
+		name: 'Custom Static Secured Pages'
 	});
 
 	callback(null, header);
@@ -100,10 +108,13 @@ plugin.init = function(app, middleware, controllers, callback) {
 	getCustomPages(function(err, data) {
 		for (var d in data) {
 			if (data.hasOwnProperty(d)) {
-				var route = data[d].route;
-				app.get('/' + route, middleware.buildHeader, renderCustomPage);
-				app.get('/templates/' + route + '.tpl', renderCustomPage);
-				app.get('/api/' + route, renderCustomPage);
+				var route = '/' + data[d].route;
+
+				setupPageRoute(app, route, middleware, [middleware.redirectToLoginIfGuest], renderCustomPage);
+
+				//app.get('/' + route, middleware.buildHeader, renderCustomPage);
+				//app.get('/templates/' + route + '.tpl', renderCustomPage);
+				//app.get('/api/' + route, renderCustomPage);
 			}
 		}
 	});

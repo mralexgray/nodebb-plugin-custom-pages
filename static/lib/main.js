@@ -1,7 +1,6 @@
 "use strict";
 
 (function() {
-	console.log('nodebb-plugin-custom-pages: loaded');
-
+	console.log('nodebb-plugin-custom-secured-pages: loaded');
 
 }());

@@ -21,14 +21,6 @@ function getCustomPages(callback) {
 	});
 }
 
-function setupPageRoute(router, name, middleware, middlewares, controller) {
-	middlewares = middlewares.concat([middleware.checkIfConfirmed, middleware.incrementPageViews, middleware.updateLastOnlineTime]);
-
-	router.get(name, middleware.buildHeader, middlewares, controller);
-	router.get('/templates/' + name + '.tpl', controller);
-	router.get('/api' + name, middlewares, controller);
-}
-
 plugin.setAvailableTemplates = function(templates, callback) {
 	getCustomPages(function(err, data) {
 		for (var d in data) {
@@ -110,7 +102,7 @@ plugin.init = function(app, middleware, controllers, callback) {
 			if (data.hasOwnProperty(d)) {
 				var route = '/' + data[d].route;
 
-				setupPageRoute(app, route, middleware, [middleware.redirectToLoginIfGuest], renderCustomPage);
+				setupPageRoute(app, route, middleware, [middleware.redirectToLoginIfGuest, middleware.checkIfConfirmed], renderCustomPage);
 
 				//app.get('/' + route, middleware.buildHeader, renderCustomPage);
 				//app.get('/templates/' + route + '.tpl', renderCustomPage);
@@ -126,5 +118,12 @@ plugin.init = function(app, middleware, controllers, callback) {
 
 	callback();
 };
+function setupPageRoute(router, name, middleware, middlewares, controller) {
+	middlewares = middlewares.concat([middleware.incrementPageViews, middleware.updateLastOnlineTime]);
+
+	router.get(name, middleware.buildHeader, middlewares, controller);
+	router.get('/templates' + name + '.tpl', controller);
+	router.get('/api' + name, middlewares, controller);
+}
 
 module.exports = plugin;

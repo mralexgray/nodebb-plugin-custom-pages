@@ -1,6 +1,6 @@
 {
   "name": "nodebb-plugin-custom-secured-pages",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Allows you to add as many new pages as you like to your NodeBB forum and secure them if needed.",
   "main": "library.js",
   "repository": {

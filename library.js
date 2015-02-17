@@ -102,7 +102,7 @@ plugin.init = function(app, middleware, controllers, callback) {
 			if (data.hasOwnProperty(d)) {
 				var route = '/' + data[d].route;
 
-				setupPageRoute(app, route, middleware, [middleware.redirectToLoginIfGuest, middleware.checkIfConfirmed], renderCustomPage);
+				setupPageRoute(app, route, middleware, [middleware.redirectToLoginIfGuest], renderCustomPage);
 
 				//app.get('/' + route, middleware.buildHeader, renderCustomPage);
 				//app.get('/templates/' + route + '.tpl', renderCustomPage);
